@@ -30,8 +30,8 @@ namespace Hidden_Hills.MVVM.ViewModel
         public PackageViewModel()
         {
             _capturedPackets = new ObservableCollection<RawCapture>();
-            AvailableDurations = new ObservableCollection<int> { 5, 10, 15, 30, 60 };
-            AvailablePorts = new ObservableCollection<int> { 80, 443, 21, 22, 25, 53, 8080 };
+            AvailableDurations = new ObservableCollection<int> { 30000, 60000, 90000, 150000 };
+            AvailablePorts = new ObservableCollection<int> { 80, 21, 22, 25, 53, 8080 };
 
             _captureCommand = new RelayCommand(StartCapture, CanStartCapture);
             _saveCommand = new RelayCommand(SavePcap, CanSavePcap);
@@ -61,6 +61,8 @@ namespace Hidden_Hills.MVVM.ViewModel
             {
                 _isCapturing = value;
                 OnPropertyChanged(nameof(IsCapturing));
+                ((RelayCommand)_captureCommand).NotifyCanExecuteChanged();
+                ((RelayCommand)_cancelCommand).NotifyCanExecuteChanged();
             }
         }
 
@@ -71,6 +73,8 @@ namespace Hidden_Hills.MVVM.ViewModel
             {
                 _isCaptureCompleted = value;
                 OnPropertyChanged(nameof(IsCaptureCompleted));
+                ((RelayCommand)_saveCommand).NotifyCanExecuteChanged();
+                ((RelayCommand)_cancelCommand).NotifyCanExecuteChanged();
             }
         }
 
@@ -102,7 +106,6 @@ namespace Hidden_Hills.MVVM.ViewModel
         {
             _cancellationTokenSource = new CancellationTokenSource();
             var token = _cancellationTokenSource.Token;
-
 
             MessageBox.Show("Rozpoczynam przechwytywanie pakietów...", "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -138,30 +141,48 @@ namespace Hidden_Hills.MVVM.ViewModel
 
                 _currentDevice.OnPacketArrival += (sender, e) =>
                 {
-                    var packet = e.GetPacket(); // Pobranie pakietu
-
+                    var packet = e.GetPacket();
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        _capturedPackets.Add(new RawCapture(packet.LinkLayerType, packet.Timeval, packet.Data.ToArray())); // Kopia danych
-                        Progress = (_capturedPackets.Count * 100) / (CaptureDuration * 10);
+                        _capturedPackets.Add(new RawCapture(packet.LinkLayerType, packet.Timeval, packet.Data.ToArray()));
                         Debug.WriteLine($"Przechwycono pakiet: {packet}");
                     });
                 };
 
                 _currentDevice.StartCapture();
 
-                // Czekaj określoną ilość sekund, następnie zatrzymaj przechwytywanie
-                await Task.Delay(CaptureDuration * 1000, token);
-                if (!token.IsCancellationRequested)
+                IsCapturing = true;
+                int elapsedTime = 0;
+                while (elapsedTime < CaptureDuration * 1000)
                 {
-                    StopCapture();
+                    await Task.Delay(500, token); // Odświeżaj co 500 ms
+                    elapsedTime += 100;
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Progress = (elapsedTime * 100) / (CaptureDuration * 1000);
+                    });
+
+                    if (token.IsCancellationRequested)
+                    {
+                        StopCapture();
+                        return;
+                    }
                 }
+
+                StopCapture();
+                IsCaptureCompleted = true;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Błąd w StartCapture: {ex.Message}");
                 MessageBox.Show($"Błąd: {ex.Message}");
                 IsCapturing = false;
+            }
+            finally
+            {
+                IsCapturing = false;
+                IsCaptureCompleted = true;
             }
         }
 
@@ -175,7 +196,7 @@ namespace Hidden_Hills.MVVM.ViewModel
             }
 
             IsCapturing = false;
-            IsCaptureCompleted = _capturedPackets.Count > 0;
+            IsCaptureCompleted = true; // Nie zależy od liczby pakietów
             MessageBox.Show("Przechwytywanie zakończone.", "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
@@ -207,7 +228,7 @@ namespace Hidden_Hills.MVVM.ViewModel
                     {
                         writer.Write(packet.Data);
                     }
-                    MessageBox.Show("Zapisano plik PCAP.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Zapisano plik PCAP.");
                 }
                 catch (Exception ex)
                 {
@@ -218,16 +239,15 @@ namespace Hidden_Hills.MVVM.ViewModel
 
         private bool CanSavePcap()
         {
-            return IsCaptureCompleted && _capturedPackets.Count > 0;
+            return _capturedPackets.Count > 0;
         }
 
         private void CancelCapture()
         {
-            _cancellationTokenSource?.Cancel(); // Anulowanie `Task.Delay()`
+            _cancellationTokenSource?.Cancel(); // Anulowanie Task.Delay()
             StopCapture();
-            _capturedPackets.Clear();
             Progress = 0;
-            IsCaptureCompleted = false;
+            IsCaptureCompleted = true;
         }
 
         private bool CanCancelCapture()

@@ -13,6 +13,7 @@
     <Style TargetType="Window">
         <Setter Property="Background" Value="{StaticResource PrimaryBackground}"/>
     </Style>
+    
 
     <!-- Nagłówki -->
     <Style TargetType="TextBlock" x:Key="HeaderStyle">
