@@ -1,0 +1,49 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModel="clr-namespace:Hidden_Hills.MVVM.ViewModel"
+                    xmlns:view="clr-namespace:Hidden_Hills.MVVM.View">
+
+    <!-- Kolory -->
+    <Color x:Key="PrimaryBackground">#1E1E1E</Color>
+    <Color x:Key="PrimaryForeground">White</Color>
+    <Color x:Key="AccentColor">#FF8C00</Color>
+    <Color x:Key="ButtonHoverColor">#FFA500</Color>
+
+    <!-- Tło -->
+    <Style TargetType="Window">
+        <Setter Property="Background" Value="{StaticResource PrimaryBackground}"/>
+    </Style>
+
+    <!-- Nagłówki -->
+    <Style TargetType="TextBlock" x:Key="HeaderStyle">
+        <Setter Property="Foreground" Value="{StaticResource AccentColor}"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <!-- Przyciski -->
+    <Style TargetType="Button" x:Key="PrimaryButton">
+        <Setter Property="Background" Value="{StaticResource AccentColor}"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Width" Value="150"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource ButtonHoverColor}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Separatory -->
+    <Style TargetType="Separator" x:Key="LineSeparator">
+        <Setter Property="Background" Value="Gray"/>
+        <Setter Property="Height" Value="2"/>
+        <Setter Property="Margin" Value="10"/>
+    </Style>
+
+</ResourceDictionary>

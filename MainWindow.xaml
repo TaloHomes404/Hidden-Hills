@@ -1,0 +1,66 @@
+﻿<Window x:Class="Hidden_Hills.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Hidden_Hills" xmlns:viewModel="clr-namespace:Hidden_Hills.MVVM.ViewModel"
+        mc:Ignorable="d"
+        Height="500" Width="820"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="Transparent"
+        AllowsTransparency="True">
+    
+    <Window.DataContext>
+        <viewModel:MainViewModel/>
+    </Window.DataContext>
+
+    
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ComponentStyle/MenuButtonStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+
+    <!-- Main window design -->
+    <Border Background="DarkSlateGray" CornerRadius="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="188"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="65"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <!-- Nagłówek -->
+            <TextBlock Text="Hidden Hills"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="24" Foreground="White"/>
+
+            <!-- Panel boczny -->
+            <StackPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch">
+                <Button Content="Home" Tag="Images/homeic.png" Height="83" Style="{StaticResource MenuButtonStyle}" Command = "{Binding HomeViewCommand}"/>
+                <Button Content="Decrypt" Tag="Images/server.png" Height="83" Style="{StaticResource MenuButtonStyle}" Command = "{Binding PackageViewCommand}"/>
+                <Button Content="Packets" Tag="Images/data-collection.png" Height="83" Style="{StaticResource MenuButtonStyle}"/>
+                <Button Content="Encrypt" Tag="Images/lock.png" Height="83" Style="{StaticResource MenuButtonStyle}"/>
+            </StackPanel>
+            
+            <!-- IMPORTANT! Main Window Content-->
+            <ContentControl Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="4">
+                
+            </ContentControl>
+            
+
+        </Grid>
+    </Border>
+</Window>
+    
