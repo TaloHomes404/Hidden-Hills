@@ -94,7 +94,7 @@ namespace Hidden_Hills.MVVM.ViewModel
         public ICommand SaveCommand => _saveCommand;
         public ICommand CancelCommand => _cancelCommand;
 
-        private async void StartCapture(object parameter)
+        private async void StartCapture()
         {
             IsCapturing = true;
             IsCaptureCompleted = false;
@@ -140,16 +140,16 @@ namespace Hidden_Hills.MVVM.ViewModel
             Progress = 100;
         }
 
-        private bool CanStartCapture(object parameter)
+        private bool CanStartCapture()
         {
             return !IsCapturing;
         }
 
-        private void SavePcap(object parameter)
+        private void SavePcap()
         {
             if (_capturedPackets.Count == 0) return;
 
-            SaveFileDialog saveFileDialog = new SaveFileDialog
+            SaveFileDialog saveFileDialog = new()
             {
                 Filter = "PCAP Files (*.pcap)|*.pcap",
                 Title = "Zapisz przechwycone pakiety"
@@ -168,12 +168,12 @@ namespace Hidden_Hills.MVVM.ViewModel
             }
         }
 
-        private bool CanSavePcap(object parameter)
+        private bool CanSavePcap()
         {
             return IsCaptureCompleted;
         }
 
-        private void CancelCapture(object parameter)
+        private void CancelCapture()
         {
             _capturedPackets.Clear();
             Progress = 0;
@@ -181,7 +181,7 @@ namespace Hidden_Hills.MVVM.ViewModel
             IsCaptureCompleted = false;
         }
 
-        private bool CanCancelCapture(object parameter)
+        private bool CanCancelCapture()
         {
             return IsCapturing || IsCaptureCompleted;
         }

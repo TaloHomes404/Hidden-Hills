@@ -35,12 +35,12 @@ namespace Hidden_Hills.MVVM.ViewModel
             CurrentView = HomeVM;
 
             // Inicjalizacja komend
-            HomeViewCommand = new RelayCommand(o =>
+            HomeViewCommand = new RelayCommand(() =>
             {
                 CurrentView = HomeVM;
             });
 
-            PackageViewCommand = new RelayCommand(o =>
+            PackageViewCommand = new RelayCommand(() =>
             {
                 CurrentView = PackageVM;
             });
