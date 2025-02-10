@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Hidden_Hills.MVVM.ViewModel
 {
-    internal class MainViewModel : ObservableObject
+    public class MainViewModel : ObservableObject
     {
         // Komendy
         public RelayCommand HomeViewCommand { get; set; }

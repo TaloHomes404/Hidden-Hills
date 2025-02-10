@@ -55,7 +55,8 @@
             <!-- IMPORTANT! Main Window Content-->
             <ContentControl Grid.Row="1"
                             Grid.Column="1"
-                            Margin="4">
+                            Margin="4"
+                            Content="{Binding CurrentView}">
                 
             </ContentControl>
             
