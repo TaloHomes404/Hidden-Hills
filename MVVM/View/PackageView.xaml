@@ -103,13 +103,15 @@
                       Height="35" 
                       Margin="0,0,0,10"
                       Background="#FF4444" 
-                      Foreground="White"/>
+                        
+                      />
                 <Button Content="Cancel"
                         Command="{Binding CancelCommand}"
                       Width="125" 
                       Height="35"
                       Background="#FF4444" 
-                      Foreground="White"/>
+                       
+                      />
             </StackPanel>
         </StackPanel>
     </StackPanel>
