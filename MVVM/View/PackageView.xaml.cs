@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using Hidden_Hills.MVVM.ViewModel;
 
 
 namespace Hidden_Hills.MVVM.View
@@ -22,6 +23,7 @@ namespace Hidden_Hills.MVVM.View
         {
 
             InitializeComponent();
+            DataContext = new PackageViewModel();
 
         }
 

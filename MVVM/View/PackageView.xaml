@@ -4,20 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Hidden_Hills.MVVM.View"
+             xmlns:viewModel="clr-namespace:Hidden_Hills.MVVM.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Foreground="Transparent">
 
-    <UserControl.Resources>
-        <Style x:Key="ColorfulIcon" TargetType="Image">
-            <Setter Property="Source" Value="/Images/package-export.png"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Value, ElementName=progressBar}" Value="100">
-                    <Setter Property="Source" Value="/Images/package-export.png"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </UserControl.Resources>
+    <UserControl.DataContext>
+        <viewModel:PackageViewModel />
+    </UserControl.DataContext>
 
     <StackPanel Margin="10">
         <!-- Górne panele z gradientem -->
@@ -34,7 +28,7 @@
                     <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,300,150"/>
                 </Border.Clip>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="15" HorizontalAlignment="Center">
-                    <Image Source="/Images/timer.png" Width="82" Height="82" Margin="0,0,15,0"/>
+                    <Image Source="C:\Users\Developer\source\Hidden Hills\Images\timer.png" Width="82" Height="82" Margin="0,0,15,0"/>
                     <StackPanel>
                         <TextBlock Text="Tracking time:" Foreground="White" FontSize="18"/>
                         <ComboBox Margin="0,10,0,0" SelectedIndex="0">
@@ -59,7 +53,7 @@
                     <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,300,150"/>
                 </Border.Clip>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="15" HorizontalAlignment="Center">
-                    <Image Source="/Images/cloud-network.png" Width="82" Height="82" Margin="0,0,16,0"/>
+                    <Image Source="C:\Users\Developer\source\Hidden Hills\Images\cloud-network.png" Width="82" Height="82" Margin="0,0,16,0"/>
                     <StackPanel>
                         <TextBlock Text="Select PORT:" Foreground="White" FontSize="18"/>
                         <ComboBox Margin="0,10,0,0" SelectedIndex="0">
@@ -74,6 +68,7 @@
 
         <!-- Nowy przycisk Capture Packets -->
         <Button Content="Capture Packets" 
+                Command="{Binding CaptureCommand}"
                 Width="200" 
                 Height="40" 
                 Margin="0,20" 
@@ -85,7 +80,7 @@
         <!-- Sekcja progresu -->
         <StackPanel Orientation="Horizontal" Margin="8,25,8,0" HorizontalAlignment="Center">
             <!-- Dynamiczna ikona -->
-            <Image Style="{StaticResource ColorfulIcon}" 
+            <Image Source="C:\Users\Developer\source\Hidden Hills\Images\package-export.png"
                    Width="128" 
                    Height="128" 
                    Margin="0,0,20,0"/>
@@ -103,12 +98,14 @@
             <!-- Przyciski akcji -->
             <StackPanel VerticalAlignment="Center">
                 <Button Content="Save PCAP" 
+                        Command="{Binding SaveCommand}"
                       Width="125" 
                       Height="35" 
                       Margin="0,0,0,10"
                       Background="#FF4444" 
                       Foreground="White"/>
-                <Button Content="Cancel" 
+                <Button Content="Cancel"
+                        Command="{Binding CancelCommand}"
                       Width="125" 
                       Height="35"
                       Background="#FF4444" 

@@ -96,48 +96,58 @@ namespace Hidden_Hills.MVVM.ViewModel
 
         private async void StartCapture()
         {
-            IsCapturing = true;
-            IsCaptureCompleted = false;
-            Progress = 0;
-            _capturedPackets.Clear();
 
-            var devices = CaptureDeviceList.Instance;
-            if (devices.Count < 1)
+            try
             {
-                MessageBox.Show("Brak dostępnych interfejsów sieciowych.");
+                IsCapturing = true;
+                IsCaptureCompleted = false;
+                Progress = 0;
+                _capturedPackets.Clear();
+
+                var devices = CaptureDeviceList.Instance;
+                if (devices.Count < 1)
+                {
+                    MessageBox.Show("Brak dostępnych interfejsów sieciowych.");
+                    IsCapturing = false;
+                    return;
+                }
+
+
+                var device = devices.FirstOrDefault();
+                if (device == null)
+                {
+                    MessageBox.Show("Nie znaleziono urządzenia do nasłuchiwania.");
+                    IsCapturing = false;
+                    return;
+                }
+
+                device.Open(DeviceModes.Promiscuous);
+                device.OnPacketArrival += (sender, e) =>
+                {
+                    var rawPacket = e.GetPacket();
+                    _capturedPackets.Add(rawPacket);
+                };
+
+                device.StartCapture();
+
+                for (int i = 0; i < CaptureDuration; i++)
+                {
+                    Progress = (i + 1) * 100 / CaptureDuration;
+                    await Task.Delay(1000);
+                }
+
+                device.StopCapture();
+                device.Close();
+
                 IsCapturing = false;
-                return;
+                IsCaptureCompleted = true;
+                Progress = 100;
             }
-
-            var device = devices.FirstOrDefault();
-            if (device == null)
+            catch (Exception ex)
             {
-                MessageBox.Show("Nie znaleziono urządzenia do nasłuchiwania.");
+                MessageBox.Show($"Błąd:{ex.Message}");
                 IsCapturing = false;
-                return;
             }
-
-            device.Open(DeviceModes.Promiscuous);
-            device.OnPacketArrival += (sender, e) =>
-            {
-                var rawPacket = e.GetPacket();
-                _capturedPackets.Add(rawPacket);
-            };
-
-            device.StartCapture();
-
-            for (int i = 0; i < CaptureDuration; i++)
-            {
-                Progress = (i + 1) * 100 / CaptureDuration;
-                await Task.Delay(1000);
-            }
-
-            device.StopCapture();
-            device.Close();
-
-            IsCapturing = false;
-            IsCaptureCompleted = true;
-            Progress = 100;
         }
 
         private bool CanStartCapture()
