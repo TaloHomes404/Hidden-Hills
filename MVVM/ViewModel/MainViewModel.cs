@@ -1,4 +1,5 @@
-﻿using Hidden_Hills.Core;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Hidden_Hills.MVVM.ViewModel
 {
