@@ -16,18 +16,18 @@
                                Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" 
                                Width="64" Height="64" Margin="10"/>
                         <TextBlock x:Name="ButtonText" Text="{TemplateBinding Content}" 
-                                   FontSize="18" VerticalAlignment="Center" Foreground="Black"/>
+                                   FontSize="18" VerticalAlignment="Center" Foreground="White" FontFamily="pack://application:,,,/Fonts/Roboto-Regular.ttf"/>
                     </StackPanel>
                     <ControlTemplate.Triggers>
                         <!-- Zmiana koloru po najechaniu -->
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="ButtonText" Property="Foreground" Value="RoyalBlue"/>
+                            <Setter TargetName="ButtonText" Property="Foreground" Value="#FF6200"/>
                             <Setter TargetName="Icon" Property="Opacity" Value="0.8"/>
                             <!-- Zmiana przezroczystości ikony -->
                         </Trigger>
                         <!-- Zmiana koloru po wciśnięciu -->
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="ButtonText" Property="Foreground" Value="White"/>
+                            <Setter TargetName="ButtonText" Property="Foreground" Value="#FF6200"/>
                             <Setter TargetName="Icon" Property="Opacity" Value="0.5"/>
                             <!-- Zmiana przezroczystości ikony -->
                         </Trigger>
