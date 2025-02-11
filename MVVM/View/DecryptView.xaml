@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Hidden_Hills.MVVM.View.PackageView"
+﻿<UserControl x:Class="Hidden_Hills.MVVM.View.DecryptView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,13 +10,13 @@
              Foreground="Transparent">
 
     <UserControl.DataContext>
-        <viewModel:PackageViewModel />
+        <viewModel:DecryptViewModel />
     </UserControl.DataContext>
 
     <StackPanel Margin="10">
         <!-- Górne panele z gradientem -->
         <StackPanel Orientation="Horizontal" Margin="0,8,0,15" HorizontalAlignment="Center">
-            <!-- Panel czasu śledzenia -->
+            <!-- Panel Import Package -->
             <Border Width="300" Height="150" Margin="8,0">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,2">
@@ -27,18 +27,14 @@
                 <Border.Clip>
                     <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,300,150"/>
                 </Border.Clip>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="15" HorizontalAlignment="Center">
-                    <Image Source="C:\Users\Developer\source\Hidden Hills\Images\timer.png" Width="82" Height="82" Margin="0,0,15,0"/>
-                    <StackPanel>
-                        <TextBlock Text="Tracking time:" Foreground="White" FontSize="18"/>
-                        <ComboBox Margin="0,10,0,0" ItemsSource="{Binding AvailableDurations}" SelectedIndex="{Binding CaptureDuration}"/>
-
-
-                    </StackPanel>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center"  HorizontalAlignment="Center">
+                    <Image Source="C:\Users\Developer\source\Hidden Hills\Images\package-export.png" Width="82" Height="82" Margin="0,0,0,2"/>
+                    <TextBlock Text="Import Package" Foreground="White" FontSize="18" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Import PCAP" Foreground="White" FontSize="14" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
 
-            <!-- Panel wyboru portu -->
+            <!-- Panel Select Encryption Algorithm -->
             <Border Width="300" Height="150" Margin="8,0">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,2">
@@ -49,20 +45,19 @@
                 <Border.Clip>
                     <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,300,150"/>
                 </Border.Clip>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="15" HorizontalAlignment="Center">
-                    <Image Source="C:\Users\Developer\source\Hidden Hills\Images\cloud-network.png" Width="82" Height="82" Margin="0,0,16,0"/>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center"  HorizontalAlignment="Center">
+                    <Image Source="C:\Users\Developer\source\Hidden Hills\Images\timer.png" Width="82" Height="82" Margin="0,0,5,0"/>
                     <StackPanel>
-                        <TextBlock Text="Select PORT:" Foreground="White" FontSize="18"/>
-                        <ComboBox Margin="0,10,0,0" ItemsSource="{Binding AvailablePorts}" SelectedIndex="{Binding SelectedPort}" />
-
+                        <TextBlock Text="Select Encryption Algorithm" Foreground="White" FontSize="18"/>
+                        <ComboBox Margin="0,6,0,0" ItemsSource="{Binding AvailableAlgorithms}" SelectedIndex="{Binding SelectedAlgorithm}" />
                     </StackPanel>
                 </StackPanel>
             </Border>
         </StackPanel>
 
-        <!-- Przycisk Capture Packets -->
-        <Button Content="Capture Packets" 
-                Command="{Binding CaptureCommand}"
+        <!-- Przycisk Encrypt Files -->
+        <Button Content="Encrypt Files" 
+                Command="{Binding EncryptCommand}"
                 Width="200" 
                 Height="40" 
                 Margin="0,20" 
@@ -74,42 +69,30 @@
         <!-- Sekcja progresu -->
         <StackPanel Orientation="Horizontal" Margin="8,25,8,0" HorizontalAlignment="Center">
 
-            <Image Source="C:\Users\Developer\source\Hidden Hills\Images\package-export.png"
+            <Image Source="C:\Users\Developer\source\Hidden Hills\Images\encrypted.png"
                    Width="128" 
                    Height="128" 
                    Margin="0,0,20,0"/>
 
             <!-- Progress Bar -->
-            <ProgressBar x:Name="progressBar" 
+            <ProgressBar x:Name="DecryptProgressBar" 
                        Value="{Binding Progress}" 
                        Width="200" 
                        Height="15" 
                        Margin="0,0,20,0"
-                       Foreground="#FF4444" 
+                       Foreground="#FF6200" 
                        Background="#33000000"
                        BorderThickness="1"/>
 
-            <!-- Przyciski akcji -->
-            <StackPanel VerticalAlignment="Center">
-                <!-- Przycisk Save PCAP -->
-                <Button Content="Save PCAP" 
-                        Command="{Binding SaveCommand}"
-                        Width="125" 
-                        Height="35" 
-                        Margin="0,0,0,10"
-                        Background="#FF6200"
-                        Foreground="White"
-                        IsEnabled="{Binding IsCaptureCompleted}"/>
-
-                <!-- Przycisk Cancel -->
-                <Button Content="Cancel"
-                        Command="{Binding CancelCommand}"
-                        Width="125" 
-                        Height="35" 
-                        Background="#FF6200"
-                        Foreground="White"
-                        IsEnabled="{Binding IsCapturing}"/>
-            </StackPanel>
+            <!-- Przycisk Save Files -->
+            <Button Content="Save Files" 
+                    Command="{Binding SaveCommand}"
+                    Width="125" 
+                    Height="35" 
+                    Margin="0,0,0,10"
+                    Background="#FF6200"
+                    Foreground="White"
+                    IsEnabled="{Binding IsEncryptionCompleted}"/>
         </StackPanel>
     </StackPanel>
 </UserControl>

@@ -3,65 +3,63 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Hidden_Hills" xmlns:viewModel="clr-namespace:Hidden_Hills.MVVM.ViewModel"
+        xmlns:local="clr-namespace:Hidden_Hills" 
+        xmlns:viewModel="clr-namespace:Hidden_Hills.MVVM.ViewModel"
         mc:Ignorable="d"
-        Height="500" Width="820"
+        Height="600" Width="1000"
         WindowStyle="None"
-        ResizeMode="NoResize"
-        Background="Transparent"
-        AllowsTransparency="True">
-    
+        ResizeMode="NoResize">
+
     <Window.DataContext>
         <viewModel:MainViewModel/>
     </Window.DataContext>
 
-    
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ComponentStyle/MenuButtonStyle.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
-
-
-    <!-- Main window design -->
-    <Border Background="DarkSlateGray" CornerRadius="10">
+    <Border Background="{StaticResource PrimaryBackgroundBrush}" CornerRadius="10">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="188"/>
+                <ColumnDefinition Width="200"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="65"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-
-            <!-- Nagłówek -->
-            <TextBlock Text="Hidden Hills"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       FontSize="24" Foreground="White"/>
-
             <!-- Panel boczny -->
-            <StackPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch">
-                <Button Content="Home" Tag="Images/homeic.png" Height="83" Style="{StaticResource MenuButtonStyle}" Command = "{Binding HomeViewCommand}"/>
-                <Button Content="Decrypt" Tag="Images/server.png" Height="83" Style="{StaticResource MenuButtonStyle}" Command = "{Binding PackageViewCommand}"/>
-                <Button Content="Packets" Tag="Images/data-collection.png" Height="83" Style="{StaticResource MenuButtonStyle}"/>
-                <Button Content="Encrypt" Tag="Images/lock.png" Height="83" Style="{StaticResource MenuButtonStyle}"/>
-            </StackPanel>
-            
-            <!-- IMPORTANT! Main Window Content-->
-            <ContentControl Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="4"
-                            Content="{Binding CurrentView}">
-                
-            </ContentControl>
-            
+            <StackPanel Grid.Column="0" Background="{StaticResource SecondaryBackgroundBrush}">
+                <TextBlock Text="Hidden Hills" 
+                           Style="{StaticResource HeaderStyle}"
+                           HorizontalAlignment="Center"
+                           Margin="0 20"/>
 
+                <Separator Background="White"/>
+
+                <Button Content="Home" 
+                        Style="{StaticResource MenuButtonStyle}"
+                        Command="{Binding HomeViewCommand}"/>
+                <Separator Background="White"/>
+
+                <Button Content="Packets" 
+                        Style="{StaticResource MenuButtonStyle}"
+                        Command="{Binding PackageViewCommand}"/>
+                <Separator Background="White"/>
+
+                <Button Content="Decrypt" 
+                        Style="{StaticResource MenuButtonStyle}"/>
+                <Separator Background="White"/>
+
+                <Button Content="Encrypt" 
+                        Style="{StaticResource MenuButtonStyle}"
+                        Command="{Binding EncryptViewCommand}"/>
+
+                <Separator Background="White"/>
+                <Button Content="Close" 
+                        Style="{StaticResource MenuButtonStyle}"
+                        Click="CloseButton_Click"
+                        />
+                <Separator Background="White"/>
+            </StackPanel>
+
+            <!-- Główna zawartość -->
+            <ContentControl Grid.Column="1"
+                            Margin="15"
+                            Content="{Binding CurrentView}"/>
         </Grid>
     </Border>
 </Window>
-    

@@ -13,5 +13,15 @@ namespace Hidden_Hills
             InitializeComponent();
             this.DataContext = new MainViewModel();
         }
+
+        private void CloseApplication()
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            CloseApplication();
+        }
     }
 }
