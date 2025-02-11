@@ -19,6 +19,9 @@
                 <view:PackageView/>
             </DataTemplate>
 
+            <!-- Czcionka Roboto -->
+            <FontFamily x:Key="RobotoRegular">pack://application:,,,/Fonts/#Roboto Regular</FontFamily>
+
         </ResourceDictionary>
         
          
