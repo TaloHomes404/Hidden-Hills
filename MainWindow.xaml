@@ -45,7 +45,12 @@
                 <Separator/>
 
                 <Button Content="Encrypt" 
-                        Style="{StaticResource MenuButtonStyle}"/>
+                        Style="{StaticResource MenuButtonStyle}"
+                        Command="{Binding EncryptViewCommand}"/>
+
+                <Button Content="Close" 
+                        Style="{StaticResource MenuButtonStyle}"
+                        Command="{Binding EncryptViewCommand}"/>
             </StackPanel>
 
             <!-- Główna zawartość -->
