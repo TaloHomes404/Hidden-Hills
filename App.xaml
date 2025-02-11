@@ -23,6 +23,10 @@
                 <view:EncryptView/>
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewModel:DecryptViewModel}">
+                <view:DecryptView/>
+            </DataTemplate>
+
             <!-- Czcionka Roboto -->
             <FontFamily x:Key="RobotoRegular">pack://application:,,,/Fonts/#Roboto Regular</FontFamily>
 

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Hidden_Hills.MVVM.View.EncryptView"
+﻿<UserControl x:Class="Hidden_Hills.MVVM.View.DecryptView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,7 +10,7 @@
              Foreground="Transparent">
 
     <UserControl.DataContext>
-        <viewModel:EncryptViewModel />
+        <viewModel:DecryptViewModel />
     </UserControl.DataContext>
 
     <StackPanel Margin="10">
@@ -75,7 +75,7 @@
                    Margin="0,0,20,0"/>
 
             <!-- Progress Bar -->
-            <ProgressBar x:Name="EncryptProgressBar" 
+            <ProgressBar x:Name="DecryptProgressBar" 
                        Value="{Binding Progress}" 
                        Width="200" 
                        Height="15" 

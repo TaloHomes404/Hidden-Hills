@@ -11,11 +11,15 @@ namespace Hidden_Hills.MVVM.ViewModel
 
         public RelayCommand EncryptViewCommand { get; set; }
 
+        public RelayCommand DecryptViewCommand { get; set; }
+
         // Obiekty ekranów 
         public PackageViewModel PackageVM { get; set; }
         public HomeViewModel HomeVM { get; set; }
 
         public EncryptViewModel EncryptVM { get; set; }
+
+        public DecryptViewModel DecryptVM { get; set; }
 
         private object _currentView;
 
@@ -37,6 +41,7 @@ namespace Hidden_Hills.MVVM.ViewModel
             HomeVM = new HomeViewModel();
             PackageVM = new PackageViewModel();
             EncryptVM = new EncryptViewModel();
+            DecryptVM = new DecryptViewModel();
             CurrentView = HomeVM;
 
             // Inicjalizacja komend
@@ -54,6 +59,13 @@ namespace Hidden_Hills.MVVM.ViewModel
             {
                 CurrentView = EncryptVM;
             });
+
+            DecryptViewCommand = new RelayCommand(() =>
+            {
+                CurrentView = DecryptVM;
+            });
+
+
         }
     }
 }
