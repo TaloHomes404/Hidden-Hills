@@ -21,10 +21,10 @@
                    FontSize="32"
                    HorizontalAlignment="Left"
                     FontFamily="pack://application:,,,/Fonts/Roboto-Regular.ttf"
-                   Margin="8,2,0,8"/>
+                   Margin="14,2,0,8"/>
 
         <StackPanel Orientation="Horizontal">
-            <Border Width="300" Height="200" Margin="8,0,0,0">
+            <Border Width="300" Height="200" Margin="14,0,0,0" CornerRadius="10">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,2">
                         <GradientStop Color="#FF6200" Offset="0.0"/>
@@ -33,7 +33,7 @@
                 </Border.Background>
 
                 <Border.Clip>
-                    <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,400,200" />
+                    <RectangleGeometry RadiusX="0" RadiusY="0" Rect="0,0,400,200" />
                 </Border.Clip>
 
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -49,12 +49,12 @@
 
         <TextBlock Text="Most Used Tools ->"
            Foreground="White"
-           FontSize="18"
+           FontSize="20"
            HorizontalAlignment="Left"
                    FontFamily="pack://application:,,,/Fonts/Roboto-Regular.ttf"
-           Margin="8,8,0,4"/>
+           Margin="14,8,0,4"/>
 
-        <StackPanel Orientation="Horizontal" Height="150">
+        <StackPanel Orientation="Horizontal" Height="150" VerticalAlignment="Bottom">
             <!-- Pierwszy Border -->
             <Border Width="150" Height="150"
                     Background="#FF7518"

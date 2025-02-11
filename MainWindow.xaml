@@ -28,29 +28,32 @@
                            HorizontalAlignment="Center"
                            Margin="0 20"/>
 
-                <Separator/>
+                <Separator Background="White"/>
 
                 <Button Content="Home" 
                         Style="{StaticResource MenuButtonStyle}"
                         Command="{Binding HomeViewCommand}"/>
-                <Separator/>
+                <Separator Background="White"/>
 
                 <Button Content="Packets" 
                         Style="{StaticResource MenuButtonStyle}"
                         Command="{Binding PackageViewCommand}"/>
-                <Separator/>
+                <Separator Background="White"/>
 
                 <Button Content="Decrypt" 
                         Style="{StaticResource MenuButtonStyle}"/>
-                <Separator/>
+                <Separator Background="White"/>
 
                 <Button Content="Encrypt" 
                         Style="{StaticResource MenuButtonStyle}"
                         Command="{Binding EncryptViewCommand}"/>
 
+                <Separator Background="White"/>
                 <Button Content="Close" 
                         Style="{StaticResource MenuButtonStyle}"
-                        Command="{Binding EncryptViewCommand}"/>
+                        Click="CloseButton_Click"
+                        />
+                <Separator Background="White"/>
             </StackPanel>
 
             <!-- Główna zawartość -->
