@@ -41,7 +41,8 @@
                 <Separator Background="White"/>
 
                 <Button Content="Decrypt" 
-                        Style="{StaticResource MenuButtonStyle}"/>
+                        Style="{StaticResource MenuButtonStyle}"
+                        Command="{Binding DecryptViewCommand}"/>
                 <Separator Background="White"/>
 
                 <Button Content="Encrypt" 

@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-
+using Hidden_Hills.MVVM.ViewModel;
 namespace Hidden_Hills.MVVM.View
 {
     /// <summary>
@@ -10,7 +10,7 @@ namespace Hidden_Hills.MVVM.View
         public DecryptView()
         {
             InitializeComponent();
-            this.DataContext = DecryptViewModel();
+            this.DataContext = new DecryptViewModel();
         }
     }
 }
