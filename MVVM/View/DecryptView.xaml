@@ -47,7 +47,7 @@
                 </Border.Clip>
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <!-- Napis "Select Encrypting Algorithm" -->
-                    <TextBlock Text="Select Encrypting Algorithm" 
+                    <TextBlock Text="Select Decrypting Algorithm" 
                                Foreground="White" 
                                FontSize="18" 
                                Margin="0,10,0,0"
@@ -69,7 +69,7 @@
 
         <!-- Przycisk Decrypt Files -->
         <Button Content="Decrypt Files" 
-                Command="{Binding EncryptCommand}"
+                Command="{Binding DecryptCommand}"
                 Width="200" 
                 Height="40" 
                 Margin="0,20" 
@@ -88,7 +88,7 @@
                     Margin="0,0,16,0">
                 <StackPanel VerticalAlignment="Center" 
                             HorizontalAlignment="Center">
-                    <Image Source="C:\Users\Developer\source\Hidden Hills\Images\server.png" 
+                    <Image Source="/Images/server.png" 
                            Width="82" 
                            Height="82"
                            Margin="0,0,0,10"/>
@@ -107,7 +107,7 @@
                          Height="30" 
                          Margin="0,0,0,10"
                          HorizontalAlignment="Center"
-                         Text="{Binding DecryptKey, UpdateSourceTrigger=PropertyChanged}"
+                         Text=""
                          Foreground="White"
                          Background="#33000000"
                          BorderBrush="#FF6200"
@@ -121,7 +121,7 @@
                                     <Setter Property="Text" Value="Enter Key..."/>
                                 </Trigger>
                                 <Trigger Property="IsFocused" Value="True">
-                                    <Setter Property="Text" Value="{Binding DecryptKey, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Setter Property="Text" Value=""/>
                                     <Setter Property="Foreground" Value="White"/>
                                 </Trigger>
                             </Style.Triggers>

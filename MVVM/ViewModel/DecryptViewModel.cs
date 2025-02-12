@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Hidden_Hills.MVVM.ViewModel
 {
-    public class DecryptViewModel : INotifyPropertyChanged
+    public class DecryptViewModel
     {
         private string _decryptKey;
         public string DecryptKey
