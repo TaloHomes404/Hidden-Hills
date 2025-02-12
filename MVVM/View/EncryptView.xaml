@@ -30,7 +30,7 @@
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center"  HorizontalAlignment="Center">
                     <Image Source="C:\Users\Developer\source\Hidden Hills\Images\package-export.png" Width="82" Height="82" Margin="0,0,0,2"/>
                     <TextBlock Text="Import Package" Foreground="White" FontSize="18" HorizontalAlignment="Center"/>
-                    <TextBlock Text="Import PCAP" Foreground="White" FontSize="14" HorizontalAlignment="Center"/>
+                    <Button Content="Import .PCAP File" Command="{Binding ImportPackageCommand}"/>
                 </StackPanel>
             </Border>
 
@@ -55,19 +55,24 @@
             </Border>
         </StackPanel>
 
-        <!-- Przycisk Encrypt Files -->
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+
+            <TextBlock Text="Enter Encryption Key:" FontSize="18" Foreground="#FFFDFDFD" HorizontalAlignment="Center" Margin="0,0,0,6"/>
+            <TextBox Width="200" Height="40" Text="{Binding EncryptionKey, UpdateSourceTrigger=PropertyChanged}"/>
+            <!-- Przycisk Encrypt Files -->
         <Button Content="Encrypt Files" 
-                Command="{Binding EncryptCommand}"
+                Command="{Binding EncryptFilesCommand}"
                 Width="200" 
                 Height="40" 
-                Margin="0,20" 
+                Margin="0,8" 
                 HorizontalAlignment="Center"
                 Background="#FF6200" 
                 Foreground="White"
                 FontWeight="Bold"/>
 
+        </StackPanel>
         <!-- Sekcja progresu -->
-        <StackPanel Orientation="Horizontal" Margin="8,25,8,0" HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Margin="8,0,8,0" HorizontalAlignment="Center">
 
             <Image Source="C:\Users\Developer\source\Hidden Hills\Images\encrypted.png"
                    Width="128" 
@@ -86,7 +91,7 @@
 
             <!-- Przycisk Save Files -->
             <Button Content="Save Files" 
-                    Command="{Binding SaveCommand}"
+                    Command="{Binding SaveFilesCommand}"
                     Width="125" 
                     Height="35" 
                     Margin="0,0,0,10"

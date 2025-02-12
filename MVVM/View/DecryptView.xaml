@@ -81,24 +81,15 @@
         <!-- Sekcja progresu -->
         <StackPanel Orientation="Horizontal" Margin="8,25,8,0" HorizontalAlignment="Center">
 
-            <!-- Mały Border z ikoną i napisem -->
-            <Border Width="150" Height="150"
-                    Background="#FF7518"
-                    CornerRadius="10"
-                    Margin="0,0,16,0">
+          
                 <StackPanel VerticalAlignment="Center" 
                             HorizontalAlignment="Center">
-                    <Image Source="/Images/server.png" 
-                           Width="82" 
-                           Height="82"
-                           Margin="0,0,0,10"/>
-                    <TextBlock Text="Decrypt Packets" 
-                               Foreground="White" 
-                               FontSize="20"
-                               HorizontalAlignment="Center"
-                               FontFamily="pack://application:,,,/Fonts/Roboto-Regular.ttf"/>
-                </StackPanel>
-            </Border>
+                <Image Source="pack://application:,,,/Images/unlock.png" 
+                Width="82" 
+                    Height="82"
+                    Margin="0,0,12,0"/>
+            </StackPanel>
+            
 
             <!-- TextBox z placeholderem "Enter Key..." -->
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,20,0">
@@ -113,20 +104,7 @@
                          BorderBrush="#FF6200"
                          BorderThickness="1"
                          Visibility="Collapsed"> <!-- Początkowo niewidoczny -->
-                    <TextBox.Style>
-                        <Style TargetType="TextBox">
-                            <Setter Property="Foreground" Value="Gray"/>
-                            <Style.Triggers>
-                                <Trigger Property="Text" Value="">
-                                    <Setter Property="Text" Value="Enter Key..."/>
-                                </Trigger>
-                                <Trigger Property="IsFocused" Value="True">
-                                    <Setter Property="Text" Value=""/>
-                                    <Setter Property="Foreground" Value="White"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
+                   
                 </TextBox>
 
                 <!-- Przycisk Import KEY File -->

@@ -39,11 +39,11 @@ namespace Hidden_Hills.MVVM.ViewModel
             }
         }
 
-        public ICommand EncryptCommand => new RelayCommand(EncryptFiles);
+        public ICommand DecryptCommand => new RelayCommand(DecryptFiles);
         public ICommand ImportKeyCommand => new RelayCommand(ImportKeyFile);
         public ICommand SaveCommand => new RelayCommand(SaveDecryptedFiles, CanSaveDecryptedFiles);
 
-        private void EncryptFiles()
+        private void DecryptFiles()
         {
             // Logika szyfrowania
         }
