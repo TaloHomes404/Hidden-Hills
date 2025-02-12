@@ -6,16 +6,15 @@
              xmlns:local="clr-namespace:Hidden_Hills.MVVM.View"
              xmlns:viewModel="clr-namespace:Hidden_Hills.MVVM.ViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             Foreground="Transparent">
+             d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.DataContext>
         <viewModel:DecryptViewModel />
     </UserControl.DataContext>
 
     <StackPanel Margin="10">
-        <!-- Górne panele z gradientem -->
-        <StackPanel Orientation="Horizontal" Margin="0,8,0,15" HorizontalAlignment="Center">
+        <!-- Górne panele -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,15">
             <!-- Panel Import Package -->
             <Border Width="300" Height="150" Margin="8,0">
                 <Border.Background>
@@ -27,14 +26,18 @@
                 <Border.Clip>
                     <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,300,150"/>
                 </Border.Clip>
-                <StackPanel Orientation="Vertical" VerticalAlignment="Center"  HorizontalAlignment="Center">
-                    <Image Source="C:\Users\Developer\source\Hidden Hills\Images\package-export.png" Width="82" Height="82" Margin="0,0,0,2"/>
-                    <TextBlock Text="Import Package" Foreground="White" FontSize="18" HorizontalAlignment="Center"/>
-                    <TextBlock Text="Import PCAP" Foreground="White" FontSize="14" HorizontalAlignment="Center"/>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Image Source="C:\Users\Developer\source\Hidden Hills\Images\package-export.png" 
+                           Width="82" Height="82" Margin="0,0,0,0"/>
+                    <TextBlock Text="Import Encrypted Package" Foreground="White" FontSize="18" 
+                               HorizontalAlignment="Center"/>
+                    <!-- Używamy bindingu do ImportButtonText, który zwraca nazwę pliku po imporcie -->
+                    <Button Content="{Binding ImportButtonText}" 
+                            Command="{Binding ImportPackageCommand}" />
                 </StackPanel>
             </Border>
 
-            <!-- Panel Select Encrypting Algorithm -->
+            <!-- Panel Select Decrypting Algorithm -->
             <Border Width="300" Height="150" Margin="8,0">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,2">
@@ -46,97 +49,58 @@
                     <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,300,150"/>
                 </Border.Clip>
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <!-- Napis "Select Encrypting Algorithm" -->
-                    <TextBlock Text="Select Decrypting Algorithm" 
-                               Foreground="White" 
-                               FontSize="18" 
-                               Margin="0,10,0,0"
-                               HorizontalAlignment="Center"/>
-                    <!-- ComboBox z algorytmami -->
-                    <ComboBox Width="200" 
-                              Height="30" 
-                              Margin="0,10,0,0"
-                              HorizontalAlignment="Center"
-                              ItemsSource="{Binding AvailableAlgorithms}"
-                              SelectedItem="{Binding SelectedAlgorithm}"
-                              Foreground="White"
-                              Background="#33000000"
-                              BorderBrush="#FF6200"
-                              BorderThickness="1"/>
+                    <Image Source="C:\Users\Developer\source\Hidden Hills\Images\timer.png" 
+                           Width="82" Height="82" Margin="0,0,5,0"/>
+                    <StackPanel>
+                        <TextBlock Text="Select Decrypting Algorithm" Foreground="White" FontSize="18"/>
+                        <ComboBox Margin="0,6,0,0" ItemsSource="{Binding AvailableAlgorithms}" 
+                                  SelectedItem="{Binding SelectedAlgorithm}" />
+                    </StackPanel>
                 </StackPanel>
             </Border>
         </StackPanel>
 
+        <!-- Panel klucza dekripcji -->
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="0,8,0,8">
+            <TextBlock Text="Decrypt Key" FontSize="18" Foreground="White" 
+                       HorizontalAlignment="Center" Margin="0,0,0,6"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <!-- Przycisk importu pliku z kluczem -->
+                <Button Content="{Binding ImportKeyButtonText}" 
+                        Command="{Binding ImportKeyFileCommand}" 
+                        Width="150" Margin="4"
+                        Background="#FF6200" Foreground="White"/>
+                <!-- Przycisk umożliwiający wpisanie klucza -->
+                <Button Content="Enter Key Text" 
+                        Background="#FF6200" Foreground="White"
+                        Command="{Binding EnterKeyTextCommand}" 
+                        Width="150" Margin="4"/>
+            </StackPanel>
+            <!-- TextBox do wpisania klucza – widoczny tylko, gdy IsKeyTextInputVisible jest true -->
+            <TextBox Text="{Binding DecryptionTextKey, UpdateSourceTrigger=PropertyChanged}" 
+                     Width="200" Height="40" Margin="0,8,0,0"
+                     Visibility="{Binding IsKeyTextInputVisible}"/>
+        </StackPanel>
+
         <!-- Przycisk Decrypt Files -->
-        <Button Content="Decrypt Files" 
-                Command="{Binding DecryptCommand}"
-                Width="200" 
-                Height="40" 
-                Margin="0,20" 
-                HorizontalAlignment="Center"
-                Background="#FF6200" 
-                Foreground="White"
-                FontWeight="Bold"/>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="0,8,0,8">
+            <Button Content="Decrypt Files" 
+                    Command="{Binding DecryptFilesCommand}" 
+                    Width="200" Height="40" 
+                    Background="#FF6200" Foreground="White" FontWeight="Bold"/>
+        </StackPanel>
 
-        <!-- Sekcja progresu -->
-        <StackPanel Orientation="Horizontal" Margin="8,25,8,0" HorizontalAlignment="Center">
-
-          
-                <StackPanel VerticalAlignment="Center" 
-                            HorizontalAlignment="Center">
-                <Image Source="pack://application:,,,/Images/unlock.png" 
-                Width="82" 
-                    Height="82"
-                    Margin="0,0,12,0"/>
-            </StackPanel>
-            
-
-            <!-- TextBox z placeholderem "Enter Key..." -->
-            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,20,0">
-                <TextBox x:Name="KeyTextBox"
-                         Width="200" 
-                         Height="30" 
-                         Margin="0,0,0,10"
-                         HorizontalAlignment="Center"
-                         Text=""
-                         Foreground="White"
-                         Background="#33000000"
-                         BorderBrush="#FF6200"
-                         BorderThickness="1"
-                         Visibility="Collapsed"> <!-- Początkowo niewidoczny -->
-                   
-                </TextBox>
-
-                <!-- Przycisk Import KEY File -->
-                <Button Content="Import KEY File" 
-                        Command="{Binding ImportKeyCommand}"
-                        Width="125" 
-                        Height="35" 
-                        HorizontalAlignment="Center"
-                        Background="#FF6200"
-                        Foreground="White"/>
-            </StackPanel>
-
-            <!-- Progress Bar -->
-            <ProgressBar x:Name="DecryptProgressBar" 
-                         Value="{Binding Progress}" 
-                         Width="200" 
-                         Height="15" 
-                         Margin="0,0,20,0"
-                         Foreground="#FF6200" 
-                         Background="#33000000"
-                         BorderThickness="1"/>
-
-            <!-- Przycisk Save Decrypted -->
-            <Button Content="Save Decrypted" 
-                    Command="{Binding SaveCommand}"
-                    Width="125" 
-                    Height="35" 
-                    Margin="0,0,0,10"
-                    Background="#FF6200"
-                    Foreground="White"
-                    IsEnabled="{Binding IsDecryptionCompleted}"/>
+        <!-- Pasek postępu i Save Decrypted File -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="8,0,8,0">
+            <Image Source="C:\Users\Developer\source\Hidden Hills\Images\encrypted.png" 
+                   Width="128" Height="128" Margin="0,0,20,0"/>
+            <ProgressBar Value="{Binding Progress}" 
+                         Width="200" Height="15" Margin="0,0,20,0"
+                         Foreground="#FF6200" Background="#33000000" BorderThickness="1"/>
+            <Button Content="Save Decrypted File" 
+                    Command="{Binding SaveFilesCommand}" 
+                    Width="150" Height="35" 
+                    Background="#FF6200" Foreground="White"/>
         </StackPanel>
     </StackPanel>
 </UserControl>
-
