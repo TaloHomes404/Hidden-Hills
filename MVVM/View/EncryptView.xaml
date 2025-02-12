@@ -30,7 +30,7 @@
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center"  HorizontalAlignment="Center">
                     <Image Source="C:\Users\Developer\source\Hidden Hills\Images\package-export.png" Width="82" Height="82" Margin="0,0,0,2"/>
                     <TextBlock Text="Import Package" Foreground="White" FontSize="18" HorizontalAlignment="Center"/>
-                    <Button Content="Import .PCAP File" Command="{Binding ImportPackageCommand}"/>
+                    <Button Content="{Binding ImportButtonText}" Command="{Binding ImportPackageCommand}"/>
                 </StackPanel>
             </Border>
 
@@ -49,7 +49,7 @@
                     <Image Source="C:\Users\Developer\source\Hidden Hills\Images\timer.png" Width="82" Height="82" Margin="0,0,5,0"/>
                     <StackPanel>
                         <TextBlock Text="Select Encryption Algorithm" Foreground="White" FontSize="18"/>
-                        <ComboBox Margin="0,6,0,0" ItemsSource="{Binding AvailableAlgorithms}" SelectedIndex="{Binding SelectedAlgorithm}" />
+                        <ComboBox Margin="0,6,0,0" ItemsSource="{Binding AvailableAlgorithms}" SelectedItem="{Binding SelectedAlgorithm}" />
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -97,7 +97,7 @@
                     Margin="0,0,0,10"
                     Background="#FF6200"
                     Foreground="White"
-                    IsEnabled="{Binding IsEncryptionCompleted}"/>
+                    />
         </StackPanel>
     </StackPanel>
 </UserControl>
