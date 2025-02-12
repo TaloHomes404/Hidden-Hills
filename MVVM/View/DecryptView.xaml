@@ -34,7 +34,7 @@
                 </StackPanel>
             </Border>
 
-            <!-- Panel Select Encryption Algorithm -->
+            <!-- Panel Select Encrypting Algorithm -->
             <Border Width="300" Height="150" Margin="8,0">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,2">
@@ -45,18 +45,30 @@
                 <Border.Clip>
                     <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,300,150"/>
                 </Border.Clip>
-                <StackPanel Orientation="Vertical" VerticalAlignment="Center"  HorizontalAlignment="Center">
-                    <Image Source="C:\Users\Developer\source\Hidden Hills\Images\timer.png" Width="82" Height="82" Margin="0,0,5,0"/>
-                    <StackPanel>
-                        <TextBlock Text="Select Encryption Algorithm" Foreground="White" FontSize="18"/>
-                        <ComboBox Margin="0,6,0,0" ItemsSource="{Binding AvailableAlgorithms}" SelectedIndex="{Binding SelectedAlgorithm}" />
-                    </StackPanel>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <!-- Napis "Select Encrypting Algorithm" -->
+                    <TextBlock Text="Select Encrypting Algorithm" 
+                               Foreground="White" 
+                               FontSize="18" 
+                               Margin="0,10,0,0"
+                               HorizontalAlignment="Center"/>
+                    <!-- ComboBox z algorytmami -->
+                    <ComboBox Width="200" 
+                              Height="30" 
+                              Margin="0,10,0,0"
+                              HorizontalAlignment="Center"
+                              ItemsSource="{Binding AvailableAlgorithms}"
+                              SelectedItem="{Binding SelectedAlgorithm}"
+                              Foreground="White"
+                              Background="#33000000"
+                              BorderBrush="#FF6200"
+                              BorderThickness="1"/>
                 </StackPanel>
             </Border>
         </StackPanel>
 
-        <!-- Przycisk Encrypt Files -->
-        <Button Content="Encrypt Files" 
+        <!-- Przycisk Decrypt Files -->
+        <Button Content="Decrypt Files" 
                 Command="{Binding EncryptCommand}"
                 Width="200" 
                 Height="40" 
@@ -69,30 +81,84 @@
         <!-- Sekcja progresu -->
         <StackPanel Orientation="Horizontal" Margin="8,25,8,0" HorizontalAlignment="Center">
 
-            <Image Source="C:\Users\Developer\source\Hidden Hills\Images\encrypted.png"
-                   Width="128" 
-                   Height="128" 
-                   Margin="0,0,20,0"/>
+            <!-- Mały Border z ikoną i napisem -->
+            <Border Width="150" Height="150"
+                    Background="#FF7518"
+                    CornerRadius="10"
+                    Margin="0,0,16,0">
+                <StackPanel VerticalAlignment="Center" 
+                            HorizontalAlignment="Center">
+                    <Image Source="C:\Users\Developer\source\Hidden Hills\Images\server.png" 
+                           Width="82" 
+                           Height="82"
+                           Margin="0,0,0,10"/>
+                    <TextBlock Text="Decrypt Packets" 
+                               Foreground="White" 
+                               FontSize="20"
+                               HorizontalAlignment="Center"
+                               FontFamily="pack://application:,,,/Fonts/Roboto-Regular.ttf"/>
+                </StackPanel>
+            </Border>
+
+            <!-- TextBox z placeholderem "Enter Key..." -->
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,20,0">
+                <TextBox x:Name="KeyTextBox"
+                         Width="200" 
+                         Height="30" 
+                         Margin="0,0,0,10"
+                         HorizontalAlignment="Center"
+                         Text="{Binding DecryptKey, UpdateSourceTrigger=PropertyChanged}"
+                         Foreground="White"
+                         Background="#33000000"
+                         BorderBrush="#FF6200"
+                         BorderThickness="1"
+                         Visibility="Collapsed"> <!-- Początkowo niewidoczny -->
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Foreground" Value="Gray"/>
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="">
+                                    <Setter Property="Text" Value="Enter Key..."/>
+                                </Trigger>
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Setter Property="Text" Value="{Binding DecryptKey, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+
+                <!-- Przycisk Import KEY File -->
+                <Button Content="Import KEY File" 
+                        Command="{Binding ImportKeyCommand}"
+                        Width="125" 
+                        Height="35" 
+                        HorizontalAlignment="Center"
+                        Background="#FF6200"
+                        Foreground="White"/>
+            </StackPanel>
 
             <!-- Progress Bar -->
             <ProgressBar x:Name="DecryptProgressBar" 
-                       Value="{Binding Progress}" 
-                       Width="200" 
-                       Height="15" 
-                       Margin="0,0,20,0"
-                       Foreground="#FF6200" 
-                       Background="#33000000"
-                       BorderThickness="1"/>
+                         Value="{Binding Progress}" 
+                         Width="200" 
+                         Height="15" 
+                         Margin="0,0,20,0"
+                         Foreground="#FF6200" 
+                         Background="#33000000"
+                         BorderThickness="1"/>
 
-            <!-- Przycisk Save Files -->
-            <Button Content="Save Files" 
+            <!-- Przycisk Save Decrypted -->
+            <Button Content="Save Decrypted" 
                     Command="{Binding SaveCommand}"
                     Width="125" 
                     Height="35" 
                     Margin="0,0,0,10"
                     Background="#FF6200"
                     Foreground="White"
-                    IsEnabled="{Binding IsEncryptionCompleted}"/>
+                    IsEnabled="{Binding IsDecryptionCompleted}"/>
         </StackPanel>
     </StackPanel>
 </UserControl>
+
