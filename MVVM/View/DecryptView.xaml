@@ -79,7 +79,7 @@
             <!-- TextBox do wpisania klucza – widoczny tylko, gdy IsKeyTextInputVisible jest true -->
             <TextBox Text="{Binding DecryptionTextKey, UpdateSourceTrigger=PropertyChanged}" 
                      Width="200" Height="40" Margin="0,8,0,0"
-                     Visibility="{Binding IsKeyTextInputVisible}"/>
+                     Visibility="{Binding KeyTextVisibility}"/>
         </StackPanel>
 
         <!-- Przycisk Decrypt Files -->

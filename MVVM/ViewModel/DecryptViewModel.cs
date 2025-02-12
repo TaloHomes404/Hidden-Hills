@@ -11,11 +11,11 @@ namespace Hidden_Hills.MVVM.ViewModel
 {
     public partial class DecryptViewModel : ObservableObject
     {
-        // Właściwości związane z importem pliku PCAP
+        // Właściwości związane z importem pliku (zaszyfrowanego)
         [ObservableProperty]
         private string selectedFilePath;
 
-        // Właściwość używana do zmiany tekstu przycisku Import Package
+        // Tekst przycisku importu – wyświetla nazwę pliku, gdy zostanie zaimportowany
         public string ImportButtonText => string.IsNullOrEmpty(SelectedFilePath)
             ? "Import .enc File"
             : Path.GetFileName(SelectedFilePath);
@@ -23,11 +23,10 @@ namespace Hidden_Hills.MVVM.ViewModel
         // Właściwości wyboru algorytmu dekripcji
         [ObservableProperty]
         private string selectedAlgorithm;
-
         public ObservableCollection<string> AvailableAlgorithms { get; } =
             new ObservableCollection<string> { "AES", "DES", "TripleDES" };
 
-        // Właściwości związane z kluczem dekripcji – tylko jeden sposób można wybrać:
+        // Właściwości związane z kluczem dekripcji – tylko jedna metoda ma być użyta:
         // Klucz z pliku
         [ObservableProperty]
         private string importedKeyFilePath;
@@ -38,23 +37,22 @@ namespace Hidden_Hills.MVVM.ViewModel
         [ObservableProperty]
         private string decryptionTextKey;
 
-        // Czy pokazać pole tekstowe dla wpisania klucza
+        // Flaga sterująca widocznością pola tekstowego do wpisania klucza
         [ObservableProperty]
         private bool isKeyTextInputVisible;
 
-        // Tekst przycisku do importu klucza – zmienia się na nazwę pliku, gdy plik zostanie wybrany
-        public string ImportKeyButtonText => string.IsNullOrEmpty(ImportedKeyFilePath)
-            ? "Import Key File"
-            : Path.GetFileName(ImportedKeyFilePath);
-
-        //Pomocnicza zmienna do zmiany widoczności textboxa (trzeba text = visible)
+        // Właściwość konwertująca flagę na Visibility – używana w XAML
         public Visibility KeyTextVisibility => IsKeyTextInputVisible ? Visibility.Visible : Visibility.Collapsed;
-
-        //Pomocniczna metoda do zmiany widoku (aktualizacji UI w oparciu o nową wartość (zmiana widzoczności)
         partial void OnIsKeyTextInputVisibleChanged(bool oldValue, bool newValue)
         {
             OnPropertyChanged(nameof(KeyTextVisibility));
         }
+
+        // Tekst przycisku importu klucza – pokazuje nazwę pliku, gdy zostanie zaimportowany
+        public string ImportKeyButtonText => string.IsNullOrEmpty(ImportedKeyFilePath)
+            ? "Import Key File"
+            : Path.GetFileName(ImportedKeyFilePath);
+
         // Pasek postępu
         [ObservableProperty]
         private double progress;
@@ -78,12 +76,12 @@ namespace Hidden_Hills.MVVM.ViewModel
             SaveFilesCommand = new RelayCommand(SaveFiles, CanSave);
         }
 
-        // Wartość efektywnego klucza – używamy klucza z pliku, jeśli jest dostępny, w przeciwnym razie klucza wpisanego
-        private string EffectiveKey => !string.IsNullOrEmpty(ImportedKeyContent)
+        // Efektywny klucz – używamy klucza z pliku, jeśli dostępny, w przeciwnym razie klucza wpisanego
+        private string EffectiveKey => !string.IsNullOrWhiteSpace(ImportedKeyContent)
             ? ImportedKeyContent
             : DecryptionTextKey;
 
-        // Aktualizacja komend przy zmianie właściwości
+        // Aktualizacja komend i właściwości przy zmianach
         partial void OnSelectedFilePathChanged(string oldValue, string newValue)
         {
             OnPropertyChanged(nameof(ImportButtonText));
@@ -95,6 +93,12 @@ namespace Hidden_Hills.MVVM.ViewModel
         }
         partial void OnDecryptionTextKeyChanged(string oldValue, string newValue)
         {
+            // Gdy wpisany klucz ulegnie zmianie, upewniamy się, że import klucza jest czyszczony
+            if (!string.IsNullOrWhiteSpace(newValue))
+            {
+                ImportedKeyFilePath = string.Empty;
+                ImportedKeyContent = string.Empty;
+            }
             DecryptFilesCommand.NotifyCanExecuteChanged();
         }
         partial void OnImportedKeyContentChanged(string oldValue, string newValue)
@@ -106,12 +110,12 @@ namespace Hidden_Hills.MVVM.ViewModel
             OnPropertyChanged(nameof(ImportKeyButtonText));
         }
 
-        // Metoda importująca plik PCAP
+        // Metoda importująca zaszyfrowany plik (tylko .enc)
         private void ImportPackage()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Filter = "PCAP files (*.pcap)|*.pcap|All files (*.*)|*.*"
+                Filter = "Encrypted files (*.enc)|*.enc|All files (*.*)|*.*"
             };
 
             if (openFileDialog.ShowDialog() == true)
@@ -122,7 +126,7 @@ namespace Hidden_Hills.MVVM.ViewModel
             }
         }
 
-        // Metoda importująca plik klucza (TXT)
+        // Metoda importująca plik klucza (TXT) – po imporcie czyścimy ewentualny wpisany klucz
         private void ImportKeyFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -142,14 +146,20 @@ namespace Hidden_Hills.MVVM.ViewModel
                 {
                     MessageBox.Show("Error reading key file: " + ex.Message);
                 }
+                // Po imporcie klucza z pliku wyłączamy opcję wpisywania tekstowego
+                IsKeyTextInputVisible = false;
+                DecryptionTextKey = string.Empty;
                 DecryptFilesCommand.NotifyCanExecuteChanged();
             }
         }
 
-        // Metoda wyświetlająca pole tekstowe do wpisania klucza
+        // Metoda wyświetlająca pole tekstowe do wpisania klucza – czyszczenie importowanego klucza
         private void EnterKeyText()
         {
-            IsKeyTextInputVisible = true;
+            IsKeyTextInputVisible = !IsKeyTextInputVisible;
+            // Czyszczenie klucza z pliku, jeśli był wcześniej zaimportowany
+            ImportedKeyFilePath = string.Empty;
+            ImportedKeyContent = string.Empty;
             DecryptFilesCommand.NotifyCanExecuteChanged();
         }
 
@@ -179,8 +189,8 @@ namespace Hidden_Hills.MVVM.ViewModel
                         aes.KeySize = 128;
                         aes.BlockSize = 128;
                         aes.Key = GetKeyBytes(EffectiveKey, 16);
-                        aes.IV = new byte[16]; // Dla uproszczenia IV = 0
-                        using (ICryptoTransform decryptor = aes.CreateDecryptor())
+                        aes.IV = new byte[16]; // dla uproszczenia – stałe IV (NIE stosować w produkcji!)
+                        using (var decryptor = aes.CreateDecryptor())
                         {
                             decryptedBytes = decryptor.TransformFinalBlock(fileBytes, 0, fileBytes.Length);
                         }
@@ -194,7 +204,7 @@ namespace Hidden_Hills.MVVM.ViewModel
                         des.BlockSize = 64;
                         des.Key = GetKeyBytes(EffectiveKey, 8);
                         des.IV = new byte[8];
-                        using (ICryptoTransform decryptor = des.CreateDecryptor())
+                        using (var decryptor = des.CreateDecryptor())
                         {
                             decryptedBytes = decryptor.TransformFinalBlock(fileBytes, 0, fileBytes.Length);
                         }
@@ -208,7 +218,7 @@ namespace Hidden_Hills.MVVM.ViewModel
                         tripleDes.BlockSize = 64;
                         tripleDes.Key = GetKeyBytes(EffectiveKey, 24);
                         tripleDes.IV = new byte[8];
-                        using (ICryptoTransform decryptor = tripleDes.CreateDecryptor())
+                        using (var decryptor = tripleDes.CreateDecryptor())
                         {
                             decryptedBytes = decryptor.TransformFinalBlock(fileBytes, 0, fileBytes.Length);
                         }
@@ -226,7 +236,7 @@ namespace Hidden_Hills.MVVM.ViewModel
                 return;
             }
 
-            // Symulacja postępu dekripcji przez 10 sekund (100 kroków po 100 ms)
+            // Symulacja postępu dekripcji przez 10 sekund (100 kroków, 100 ms każdy)
             Progress = 0;
             const int totalSteps = 100;
             for (int i = 0; i <= totalSteps; i++)
@@ -262,11 +272,11 @@ namespace Hidden_Hills.MVVM.ViewModel
             }
         }
 
-        // Warunki umożliwiające wykonanie komendy dekripcji
+        // Warunki umożliwiające wykonanie dekripcji – wymagane: plik, algorytm oraz niepusty efektywny klucz
         private bool CanDecrypt() =>
             !string.IsNullOrEmpty(SelectedFilePath) &&
             !string.IsNullOrEmpty(SelectedAlgorithm) &&
-            !string.IsNullOrEmpty(EffectiveKey);
+            !string.IsNullOrWhiteSpace(EffectiveKey);
 
         private bool CanSave() => Progress >= 100 && _decryptedData != null;
 
