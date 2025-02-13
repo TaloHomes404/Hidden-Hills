@@ -3,7 +3,7 @@
                     xmlns:viewModel="clr-namespace:Hidden_Hills.MVVM.ViewModel"
                     xmlns:view="clr-namespace:Hidden_Hills.MVVM.View"
                     >
-    <!-- Styling resource for menu buttons, hover-click func design -->
+
     <Style x:Key="MenuButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
@@ -11,29 +11,145 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                        <Image x:Name="Icon" 
+                    <!-- Używamy kontenera Grid, aby móc dodać VisualStateManager -->
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                            <Image x:Name="Icon" 
                                Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" 
                                Width="64" Height="64" Margin="10"/>
-                        <TextBlock x:Name="ButtonText" Text="{TemplateBinding Content}" 
-                                   FontSize="18" VerticalAlignment="Center" Foreground="White" FontFamily="pack://application:,,,/Fonts/Roboto-Regular.ttf"/>
-                    </StackPanel>
-                    <ControlTemplate.Triggers>
-                        <!-- Zmiana koloru po najechaniu -->
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="ButtonText" Property="Foreground" Value="#FF6200"/>
-                            <Setter TargetName="Icon" Property="Opacity" Value="0.8"/>
-                            <!-- Zmiana przezroczystości ikony -->
-                        </Trigger>
-                        <!-- Zmiana koloru po wciśnięciu -->
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="ButtonText" Property="Foreground" Value="#FF6200"/>
-                            <Setter TargetName="Icon" Property="Opacity" Value="0.5"/>
-                            <!-- Zmiana przezroczystości ikony -->
-                        </Trigger>
-                    </ControlTemplate.Triggers>
+                            <TextBlock x:Name="ButtonText" 
+                                   Text="{TemplateBinding Content}" 
+                                   FontSize="18" 
+                                   VerticalAlignment="Center" 
+                                   Foreground="White"
+                                   FontFamily="pack://application:,,,/Fonts/Roboto-Regular.ttf"/>
+                        </StackPanel>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+
+
+    <!-- Styling resource for menu buttons, hover-click func design -->
+    <Style x:Key="MenuRadioButtonStyle" TargetType="RadioButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <!-- Układ w trzech wierszach:
+             • wiersz 0 – górny separator,
+             • wiersz 1 – zawartość (ikona + tekst),
+             • wiersz 2 – dolny separator -->
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1"/>
+                            <!-- separator górny -->
+                            <RowDefinition Height="*"/>
+                            <!-- zawartość -->
+                            <RowDefinition Height="1"/>
+                            <!-- separator dolny -->
+                        </Grid.RowDefinitions>
+
+                        <!-- Separator górny -->
+                        <Border x:Name="TopSeparator" Background="Gray" Grid.Row="0" Height="1"/>
+
+                        <!-- Główna zawartość – ikona i tekst -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="1">
+                            <Image x:Name="Icon" 
+                   Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" 
+                   Width="64" Height="64" Margin="10"/>
+                            <TextBlock x:Name="ButtonText" 
+                       Text="{TemplateBinding Content}" 
+                       FontSize="18" 
+                       VerticalAlignment="Center" 
+                       Foreground="White" 
+                       FontFamily="pack://application:,,,/Fonts/Roboto-Regular.ttf"/>
+                        </StackPanel>
+
+                        <!-- Separator dolny -->
+                        <Border x:Name="BottomSeparator" Background="Gray" Grid.Row="2" Height="1"/>
+
+                        <!-- Definicje stanów – interakcje i zaznaczenie -->
+                        <VisualStateManager.VisualStateGroups>
+                            <!-- Stany związane z interakcją (Normal, MouseOver, Pressed) -->
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="ButtonText" 
+                                  Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" 
+                                  To="White" Duration="0:0:0.3"/>
+                                        <DoubleAnimation Storyboard.TargetName="Icon" 
+                                   Storyboard.TargetProperty="Opacity" 
+                                   To="1" Duration="0:0:0.3"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="ButtonText" 
+                                  Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" 
+                                  To="#FF6200" Duration="0:0:0.3"/>
+                                        <DoubleAnimation Storyboard.TargetName="Icon" 
+                                   Storyboard.TargetProperty="Opacity" 
+                                   To="0.8" Duration="0:0:0.3"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="ButtonText" 
+                                  Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" 
+                                  To="#FFA500" Duration="0:0:0.1"/>
+                                        <DoubleAnimation Storyboard.TargetName="Icon" 
+                                   Storyboard.TargetProperty="Opacity" 
+                                   To="0.5" Duration="0:0:0.1"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <!-- Stany zaznaczenia (Checked/Unchecked) -->
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Unchecked">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="ButtonText" 
+                                  Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" 
+                                  To="White" Duration="0:0:0.3"/>
+                                        <DoubleAnimation Storyboard.TargetName="Icon" 
+                                   Storyboard.TargetProperty="Opacity" 
+                                   To="1" Duration="0:0:0.3"/>
+                                        <ColorAnimation Storyboard.TargetName="TopSeparator"
+                                  Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                  To="Gray" Duration="0:0:0.3"/>
+                                        <ColorAnimation Storyboard.TargetName="BottomSeparator"
+                                  Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                  To="Gray" Duration="0:0:0.3"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <!-- Po zaznaczeniu zmienia się kolor tekstu na jaśniejszy pomarańczowy -->
+                                        <ColorAnimation Storyboard.TargetName="ButtonText" 
+                                  Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" 
+                                  To="#FFA500" Duration="0:0:0.3"/>
+                                        <DoubleAnimation Storyboard.TargetName="Icon" 
+                                   Storyboard.TargetProperty="Opacity" 
+                                   To="0.8" Duration="0:0:0.3"/>
+                                        <!-- Separator zmienia kolor na biały -->
+                                        <ColorAnimation Storyboard.TargetName="TopSeparator"
+                                  Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                  To="White" Duration="0:0:0.3"/>
+                                        <ColorAnimation Storyboard.TargetName="BottomSeparator"
+                                  Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                  To="White" Duration="0:0:0.3"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

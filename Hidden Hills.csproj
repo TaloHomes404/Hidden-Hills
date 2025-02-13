@@ -10,6 +10,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\close.png" />
+    <None Remove="Images\cloud-network.png" />
+    <None Remove="Images\convert.png" />
+    <None Remove="Images\data-collection.png" />
+    <None Remove="Images\decryptkey.png" />
+    <None Remove="Images\decryptmain.png" />
+    <None Remove="Images\encrypted.png" />
+    <None Remove="Images\encryptkey.png" />
+    <None Remove="Images\encryptmain.png" />
+    <None Remove="Images\green_package.png" />
+    <None Remove="Images\home.png" />
+    <None Remove="Images\homeic.png" />
+    <None Remove="Images\lock.png" />
+    <None Remove="Images\package-export.png" />
+    <None Remove="Images\package.png" />
+    <None Remove="Images\port.png" />
+    <None Remove="Images\red_package.png" />
+    <None Remove="Images\server.png" />
+    <None Remove="Images\timer.png" />
+    <None Remove="Images\tracking.png" />
+    <None Remove="Images\unlock.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Core\" />
     <Folder Include="MVVM\Model\" />
   </ItemGroup>
@@ -18,6 +42,30 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="PacketDotNet" Version="1.4.7" />
     <PackageReference Include="SharpPcap" Version="6.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\close.png" />
+    <Resource Include="Images\cloud-network.png" />
+    <Resource Include="Images\convert.png" />
+    <Resource Include="Images\data-collection.png" />
+    <Resource Include="Images\decryptkey.png" />
+    <Resource Include="Images\decryptmain.png" />
+    <Resource Include="Images\encrypted.png" />
+    <Resource Include="Images\encryptkey.png" />
+    <Resource Include="Images\encryptmain.png" />
+    <Resource Include="Images\green_package.png" />
+    <Resource Include="Images\home.png" />
+    <Resource Include="Images\homeic.png" />
+    <Resource Include="Images\lock.png" />
+    <Resource Include="Images\package-export.png" />
+    <Resource Include="Images\package.png" />
+    <Resource Include="Images\port.png" />
+    <Resource Include="Images\red_package.png" />
+    <Resource Include="Images\server.png" />
+    <Resource Include="Images\timer.png" />
+    <Resource Include="Images\tracking.png" />
+    <Resource Include="Images\unlock.png" />
   </ItemGroup>
 
   <ItemGroup>

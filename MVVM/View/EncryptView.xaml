@@ -28,7 +28,7 @@
                     <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,300,150"/>
                 </Border.Clip>
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center"  HorizontalAlignment="Center">
-                    <Image Source="C:\Users\Developer\source\Hidden Hills\Images\package-export.png" Width="82" Height="82" Margin="0,0,0,2"/>
+                    <Image Source="pack://application:,,,/Images/package.png" Width="82" Height="82" Margin="0,0,0,2"/>
                     <TextBlock Text="Import Package" Foreground="White" FontSize="18" HorizontalAlignment="Center"/>
                     <Button Content="{Binding ImportButtonText}" Command="{Binding ImportPackageCommand}"/>
                 </StackPanel>
@@ -46,7 +46,7 @@
                     <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,300,150"/>
                 </Border.Clip>
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center"  HorizontalAlignment="Center">
-                    <Image Source="C:\Users\Developer\source\Hidden Hills\Images\timer.png" Width="82" Height="82" Margin="0,0,5,0"/>
+                    <Image Source="pack://application:,,,/Images/encryptkey.png" Width="82" Height="82" Margin="0,0,5,0"/>
                     <StackPanel>
                         <TextBlock Text="Select Encryption Algorithm" Foreground="White" FontSize="18"/>
                         <ComboBox Margin="0,6,0,0" ItemsSource="{Binding AvailableAlgorithms}" SelectedItem="{Binding SelectedAlgorithm}" />
@@ -74,7 +74,7 @@
         <!-- Sekcja progresu -->
         <StackPanel Orientation="Horizontal" Margin="8,0,8,0" HorizontalAlignment="Center">
 
-            <Image Source="C:\Users\Developer\source\Hidden Hills\Images\encrypted.png"
+            <Image Source="pack://application:,,,/Images/encryptkey.png"
                    Width="128" 
                    Height="128" 
                    Margin="0,0,20,0"/>

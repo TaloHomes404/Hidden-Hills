@@ -18,49 +18,61 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="9*"/>
+                <ColumnDefinition Width="71*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Panel boczny -->
+            <!-- Przezroczysty border na nazwie aplikacji z funkcją DRAG-->
+            
             <StackPanel Grid.Column="0" Background="{StaticResource SecondaryBackgroundBrush}">
                 <TextBlock Text="Hidden Hills" 
-                           Style="{StaticResource HeaderStyle}"
-                           HorizontalAlignment="Center"
-                           Margin="0 20"/>
+                         Style="{StaticResource HeaderStyle}"
+                         HorizontalAlignment="Center"
+                         Margin="0,20,0,20"
+                         />
 
-                <Separator Background="White"/>
+                <!-- Przykładowe pozycje menu jako RadioButtony -->
+                <RadioButton Content="Home" 
+                           Style="{StaticResource MenuRadioButtonStyle}"
+                           Command="{Binding HomeViewCommand}"
+                           GroupName="MenuButtons"
+                           Tag="pack://application:,,,/Images/home.png"
+                           />
 
-                <Button Content="Home" 
-                        Style="{StaticResource MenuButtonStyle}"
-                        Command="{Binding HomeViewCommand}"/>
-                <Separator Background="White"/>
+                <RadioButton Content="Packets" 
+                           Style="{StaticResource MenuRadioButtonStyle}"
+                           Command="{Binding PackageViewCommand}"
+                           GroupName="MenuButtons"
+                           Tag="pack://application:,,,/Images/package.png"
+                           />
 
-                <Button Content="Packets" 
-                        Style="{StaticResource MenuButtonStyle}"
-                        Command="{Binding PackageViewCommand}"/>
-                <Separator Background="White"/>
+                <RadioButton Content="Decrypt" 
+                           Style="{StaticResource MenuRadioButtonStyle}"
+                           Command="{Binding DecryptViewCommand}"
+                           GroupName="MenuButtons"
+                           Tag="pack://application:,,,/Images/decryptkey.png"
+                           />
 
-                <Button Content="Decrypt" 
-                        Style="{StaticResource MenuButtonStyle}"
-                        Command="{Binding DecryptViewCommand}"/>
-                <Separator Background="White"/>
+                <RadioButton Content="Encrypt" 
+                           Style="{StaticResource MenuRadioButtonStyle}"
+                           Command="{Binding EncryptViewCommand}"
+                           GroupName="MenuButtons"
+                           Tag="pack://application:,,,/Images/encryptkey.png"
+                           />
 
-                <Button Content="Encrypt" 
-                        Style="{StaticResource MenuButtonStyle}"
-                        Command="{Binding EncryptViewCommand}"/>
-
-                <Separator Background="White"/>
+                <!-- Jeśli Close nie ma być częścią grupy, możesz zostawić Button -->
                 <Button Content="Close" 
-                        Style="{StaticResource MenuButtonStyle}"
-                        Click="CloseButton_Click"
-                        />
-                <Separator Background="White"/>
+                      Style="{StaticResource MenuButtonStyle}"
+                      Click="CloseButton_Click"
+                        Tag="/Images/close.png"
+                      Margin="0,5"/>
             </StackPanel>
 
             <!-- Główna zawartość -->
             <ContentControl Grid.Column="1"
-                            Margin="15"
-                            Content="{Binding CurrentView}"/>
+                          Margin="15,15,15,15"
+                          Content="{Binding CurrentView}" Grid.ColumnSpan="2"/>
         </Grid>
     </Border>
 </Window>

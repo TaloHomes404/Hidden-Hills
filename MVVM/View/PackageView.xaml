@@ -16,6 +16,7 @@
     <StackPanel Margin="10">
         <!-- Górne panele z gradientem -->
         <StackPanel Orientation="Horizontal" Margin="0,8,0,15" HorizontalAlignment="Center">
+
             <!-- Panel czasu śledzenia -->
             <Border Width="300" Height="150" Margin="8,0">
                 <Border.Background>
@@ -27,13 +28,17 @@
                 <Border.Clip>
                     <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,300,150"/>
                 </Border.Clip>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="15" HorizontalAlignment="Center">
-                    <Image Source="C:\Users\Developer\source\Hidden Hills\Images\timer.png" Width="82" Height="82" Margin="0,0,15,0"/>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Image Source="pack://application:,,,/Images/tracking.png" 
+                       Width="82" Height="82" Margin="0,0,0,0"/>
                     <StackPanel>
-                        <TextBlock Text="Tracking time:" Foreground="White" FontSize="18"/>
-                        <ComboBox Margin="0,10,0,0" ItemsSource="{Binding AvailableDurations}" SelectedIndex="{Binding CaptureDuration}"/>
-
-
+                        <TextBlock Text="Tracking time:" 
+                             Foreground="White" 
+                             FontSize="18" 
+                             HorizontalAlignment="Center"/>
+                        <ComboBox Margin="0,6,0,0" 
+                            ItemsSource="{Binding AvailableDurations}" 
+                            SelectedIndex="{Binding CaptureDuration}"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -49,18 +54,23 @@
                 <Border.Clip>
                     <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,300,150"/>
                 </Border.Clip>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="15" HorizontalAlignment="Center">
-                    <Image Source="C:\Users\Developer\source\Hidden Hills\Images\cloud-network.png" Width="82" Height="82" Margin="0,0,16,0"/>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Image Source="pack://application:,,,/Images/port.png" 
+                       Width="82" Height="82" Margin="0,0,5,0"/>
                     <StackPanel>
-                        <TextBlock Text="Select PORT:" Foreground="White" FontSize="18"/>
-                        <ComboBox Margin="0,10,0,0" ItemsSource="{Binding AvailablePorts}" SelectedIndex="{Binding SelectedPort}" />
-
+                        <TextBlock Text="Select PORT:" 
+                             Foreground="White" 
+                             FontSize="18" 
+                             HorizontalAlignment="Center"/>
+                        <ComboBox Margin="0,6,0,0" 
+                            ItemsSource="{Binding AvailablePorts}" 
+                            SelectedIndex="{Binding SelectedPort}"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
         </StackPanel>
-
-        <!-- Przycisk Capture Packets -->
+  
+    <!-- Przycisk Capture Packets -->
         <Button Content="Capture Packets" 
                 Command="{Binding CaptureCommand}"
                 Width="200" 
@@ -74,7 +84,7 @@
         <!-- Sekcja progresu -->
         <StackPanel Orientation="Horizontal" Margin="8,25,8,0" HorizontalAlignment="Center">
 
-            <Image Source="C:\Users\Developer\source\Hidden Hills\Images\package-export.png"
+            <Image Source="pack://application:,,,/Images/package.png"
                    Width="128" 
                    Height="128" 
                    Margin="0,0,20,0"/>
