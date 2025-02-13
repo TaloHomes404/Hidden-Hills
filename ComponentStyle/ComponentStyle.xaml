@@ -20,9 +20,8 @@
         <!-- Styl głównego okna -->
         <Style TargetType="Window">
             <Setter Property="Background" Value="{StaticResource PrimaryBackgroundBrush}"/>
-            <Setter Property="Foreground" Value="{StaticResource PrimaryForegroundBrush}"/>
-            <Setter Property="FontFamily" Value="{StaticResource RobotoRegular}"/>
-            <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryForegroundBrush}"/>
+        <Setter Property="FontSize" Value="14"/>
         </Style>
 
         <!-- Nagłówki -->
@@ -33,40 +32,6 @@
             <Setter Property="Margin" Value="0 0 0 10"/>
         </Style>
 
-        <!-- Przyciski główne -->
-        <Style TargetType="Button" x:Key="PrimaryButton">
-            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
-            <Setter Property="Foreground" Value="{StaticResource PrimaryBackgroundBrush}"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Padding" Value="12 8"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                            CornerRadius="4">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource ButtonHoverColor}"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Opacity" Value="0.6"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- Separatory -->
-        <Style TargetType="Separator">
-            <Setter Property="Background" Value="#404040"/>
-            <Setter Property="Margin" Value="10 5"/>
-            <Setter Property="Height" Value="1"/>
-        </Style>
+       
 
     </ResourceDictionary>

@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Input;
 using Hidden_Hills.MVVM.ViewModel;
 
 namespace Hidden_Hills
@@ -21,6 +22,10 @@ namespace Hidden_Hills
             CloseApplication();
         }
 
+        private void AppNameDragAbility(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
 
     }
 }
