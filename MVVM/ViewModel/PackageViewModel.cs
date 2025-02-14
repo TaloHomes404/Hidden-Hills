@@ -7,6 +7,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using SharpPcap;
+using Duration = Hidden_Hills.Tools.Duration;
 
 namespace Hidden_Hills.MVVM.ViewModel
 {
@@ -17,7 +18,7 @@ namespace Hidden_Hills.MVVM.ViewModel
         private bool _isCaptureCompleted;
         private ObservableCollection<RawCapture> _capturedPackets;
         private int _selectedPort;
-        private int _captureDuration;
+        private Duration _captureDuration;
         private ICommand _captureCommand;
         private ICommand _saveCommand;
         private ICommand _cancelCommand;
@@ -30,7 +31,14 @@ namespace Hidden_Hills.MVVM.ViewModel
         public PackageViewModel()
         {
             _capturedPackets = new ObservableCollection<RawCapture>();
-            AvailableDurations = new ObservableCollection<int> { 30000, 60000, 90000, 150000 };
+            AvailableDurations = new ObservableCollection<Duration>
+            {
+                 new() { Milliseconds = 30000 },
+                 new() { Milliseconds = 60000 },
+                 new() { Milliseconds = 180000 },
+                 new() { Milliseconds = 300000 },
+                 new() { Milliseconds = 600000 }
+            };
             AvailablePorts = new ObservableCollection<int> { 80, 21, 22, 25, 53, 8080 };
 
             _captureCommand = new RelayCommand(StartCapture, CanStartCapture);
@@ -41,7 +49,7 @@ namespace Hidden_Hills.MVVM.ViewModel
             SelectedPort = AvailablePorts.First();
         }
 
-        public ObservableCollection<int> AvailableDurations { get; }
+        public ObservableCollection<Duration> AvailableDurations { get; }
         public ObservableCollection<int> AvailablePorts { get; }
 
         public int Progress
@@ -88,7 +96,7 @@ namespace Hidden_Hills.MVVM.ViewModel
             }
         }
 
-        public int CaptureDuration
+        public Duration CaptureDuration
         {
             get => _captureDuration;
             set
@@ -153,14 +161,14 @@ namespace Hidden_Hills.MVVM.ViewModel
 
                 IsCapturing = true;
                 int elapsedTime = 0;
-                while (elapsedTime < CaptureDuration * 1000)
+                while (elapsedTime < CaptureDuration.Milliseconds)
                 {
                     await Task.Delay(500, token); // Odświeżaj co 500 ms
-                    elapsedTime += 100;
+                    elapsedTime += 500;
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        Progress = (elapsedTime * 100) / (CaptureDuration * 1000);
+                        Progress = (elapsedTime * 100) / CaptureDuration.Milliseconds;
                     });
 
                     if (token.IsCancellationRequested)

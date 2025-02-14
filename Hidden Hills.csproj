@@ -9,6 +9,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+
+
   <ItemGroup>
     <None Remove="Images\close.png" />
     <None Remove="Images\cloud-network.png" />
@@ -34,7 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Core\" />
     <Folder Include="MVVM\Model\" />
   </ItemGroup>
 

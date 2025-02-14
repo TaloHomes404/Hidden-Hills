@@ -82,16 +82,16 @@ namespace Hidden_Hills.MVVM.ViewModel
             : DecryptionTextKey;
 
         // Aktualizacja komend i właściwości przy zmianach
-        partial void OnSelectedFilePathChanged(string oldValue, string newValue)
+        partial void OnSelectedFilePathChanged(string? oldValue, string newValue)
         {
             OnPropertyChanged(nameof(ImportButtonText));
             DecryptFilesCommand.NotifyCanExecuteChanged();
         }
-        partial void OnSelectedAlgorithmChanged(string oldValue, string newValue)
+        partial void OnSelectedAlgorithmChanged(string? oldValue, string newValue)
         {
             DecryptFilesCommand.NotifyCanExecuteChanged();
         }
-        partial void OnDecryptionTextKeyChanged(string oldValue, string newValue)
+        partial void OnDecryptionTextKeyChanged(string? oldValue, string newValue)
         {
             // Gdy wpisany klucz ulegnie zmianie, upewniamy się, że import klucza jest czyszczony
             if (!string.IsNullOrWhiteSpace(newValue))
@@ -101,11 +101,11 @@ namespace Hidden_Hills.MVVM.ViewModel
             }
             DecryptFilesCommand.NotifyCanExecuteChanged();
         }
-        partial void OnImportedKeyContentChanged(string oldValue, string newValue)
+        partial void OnImportedKeyContentChanged(string? oldValue, string newValue)
         {
             DecryptFilesCommand.NotifyCanExecuteChanged();
         }
-        partial void OnImportedKeyFilePathChanged(string oldValue, string newValue)
+        partial void OnImportedKeyFilePathChanged(string? oldValue, string newValue)
         {
             OnPropertyChanged(nameof(ImportKeyButtonText));
         }
@@ -179,7 +179,7 @@ namespace Hidden_Hills.MVVM.ViewModel
                 return;
             }
 
-            byte[] decryptedBytes = null;
+            byte[]? decryptedBytes = null;
             try
             {
                 if (SelectedAlgorithm == "AES")

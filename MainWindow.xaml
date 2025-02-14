@@ -6,8 +6,11 @@
         xmlns:local="clr-namespace:Hidden_Hills" 
         xmlns:viewModel="clr-namespace:Hidden_Hills.MVVM.ViewModel"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Height="600" Width="1000"
         WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True"
         ResizeMode="NoResize">
 
     <Window.DataContext>
@@ -30,6 +33,7 @@
                          Style="{StaticResource HeaderStyle}"
                          HorizontalAlignment="Center"
                          Margin="0,20,0,20"
+                           MouseLeftButtonDown="AppNameDragAbility"
                          />
 
                 <!-- Przykładowe pozycje menu jako RadioButtony -->

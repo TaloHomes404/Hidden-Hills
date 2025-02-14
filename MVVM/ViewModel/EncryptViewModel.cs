@@ -44,15 +44,15 @@ namespace Hidden_Hills.MVVM.ViewModel
         }
 
         // Powiadomienia o zmianach właściwości, aby komenda mogła zaktualizować swoje CanExecute
-        partial void OnSelectedFilePathChanged(string oldValue, string newValue)
+        partial void OnSelectedFilePathChanged(string? oldValue, string newValue)
         {
             EncryptFilesCommand.NotifyCanExecuteChanged();
         }
-        partial void OnSelectedAlgorithmChanged(string oldValue, string newValue)
+        partial void OnSelectedAlgorithmChanged(string? oldValue, string newValue)
         {
             EncryptFilesCommand.NotifyCanExecuteChanged();
         }
-        partial void OnEncryptionKeyChanged(string oldValue, string newValue)
+        partial void OnEncryptionKeyChanged(string? oldValue, string newValue)
         {
             EncryptFilesCommand.NotifyCanExecuteChanged();
         }
@@ -104,7 +104,7 @@ namespace Hidden_Hills.MVVM.ViewModel
             }
 
             // Wykonanie szyfrowania przy użyciu klucza podanego przez użytkownika
-            byte[] encryptedBytes = null;
+            byte[]? encryptedBytes = null;
             try
             {
                 if (SelectedAlgorithm == "AES")
@@ -114,7 +114,7 @@ namespace Hidden_Hills.MVVM.ViewModel
                         aes.KeySize = 128;   // 16 bajtów
                         aes.BlockSize = 128; // 16 bajtów
                         aes.Key = GetKeyBytes(EncryptionKey, 16); // Używamy klucza wpisanego przez użytkownika
-                        aes.IV = new byte[16]; // Dla uproszczenia IV = 0 (NIE stosować w produkcji!)
+                        aes.IV = new byte[16];
                         using (ICryptoTransform encryptor = aes.CreateEncryptor())
                         {
                             encryptedBytes = encryptor.TransformFinalBlock(fileBytes, 0, fileBytes.Length);
