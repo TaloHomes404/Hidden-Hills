@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -30,6 +31,7 @@ namespace Hidden_Hills.MVVM.ViewModel
         public PackageViewModel()
         {
             _capturedPackets = new ObservableCollection<RawCapture>();
+            _captured_packets_ensure_subscription();
             AvailableDurations = new ObservableCollection<int> { 30000, 60000, 90000, 150000 };
             AvailablePorts = new ObservableCollection<int> { 80, 21, 22, 25, 53, 8080 };
 
@@ -39,6 +41,21 @@ namespace Hidden_Hills.MVVM.ViewModel
 
             CaptureDuration = AvailableDurations.First();
             SelectedPort = AvailablePorts.First();
+        }
+
+        private void _captured_packets_ensure_subscription()
+        {
+            _capturedPackets.CollectionChanged += CapturedPackets_CollectionChanged;
+        }
+
+        private void CapturedPackets_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            Debug.WriteLine($"CapturedPackets CollectionChanged: Action={e.Action}, Count={_capturedPackets.Count}");
+            // Bezpieczne powiadomienie komendy na UI wątku
+            Application.Current?.Dispatcher.Invoke(() =>
+            {
+                if (_saveCommand is RelayCommand rc) rc.NotifyCanExecuteChanged();
+            });
         }
 
         public ObservableCollection<int> AvailableDurations { get; }
@@ -62,9 +79,11 @@ namespace Hidden_Hills.MVVM.ViewModel
                 _isCapturing = value;
                 OnPropertyChanged(nameof(IsCapturing));
                 ((RelayCommand)_captureCommand).NotifyCanExecuteChanged();
-                ((RelayCommand)_cancelCommand).NotifyCanExecuteChanged();
+                ((RelayCommand)_cancel_command_safe()).NotifyCanExecuteChanged();
             }
         }
+
+        private ICommand _cancel_command_safe() => _cancelCommand ??= new RelayCommand(CancelCapture, CanCancelCapture);
 
         public bool IsCaptureCompleted
         {
@@ -73,7 +92,7 @@ namespace Hidden_Hills.MVVM.ViewModel
             {
                 _isCaptureCompleted = value;
                 OnPropertyChanged(nameof(IsCaptureCompleted));
-                ((RelayCommand)_saveCommand).NotifyCanExecuteChanged();
+                if (_saveCommand is RelayCommand rs) rs.NotifyCanExecuteChanged();
                 ((RelayCommand)_cancelCommand).NotifyCanExecuteChanged();
             }
         }
@@ -145,7 +164,9 @@ namespace Hidden_Hills.MVVM.ViewModel
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         _capturedPackets.Add(new RawCapture(packet.LinkLayerType, packet.Timeval, packet.Data.ToArray()));
-                        Debug.WriteLine($"Przechwycono pakiet: {packet}");
+                        Debug.WriteLine($"Przechwycono pakiet. Nowy Count = {_capturedPackets.Count}");
+                        // Dodatkowe bezpieczne powiadomienie (na wypadek, gdyby CollectionChanged nie odświeżał UI)
+                        if (_saveCommand is RelayCommand rc) rc.NotifyCanExecuteChanged();
                     });
                 };
 
@@ -153,14 +174,14 @@ namespace Hidden_Hills.MVVM.ViewModel
 
                 IsCapturing = true;
                 int elapsedTime = 0;
-                while (elapsedTime < CaptureDuration * 1000)
+                while (elapsedTime < CaptureDuration)
                 {
-                    await Task.Delay(500, token); // Odświeżaj co 500 ms
-                    elapsedTime += 100;
+                    await Task.Delay(500, token);
+                    elapsedTime += 500;
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        Progress = (elapsedTime * 100) / (CaptureDuration * 1000);
+                        Progress = (int)((elapsedTime * 100L) / CaptureDuration);
                     });
 
                     if (token.IsCancellationRequested)
@@ -196,7 +217,11 @@ namespace Hidden_Hills.MVVM.ViewModel
             }
 
             IsCapturing = false;
-            IsCaptureCompleted = true; // Nie zależy od liczby pakietów
+            IsCaptureCompleted = true;
+            // Upewnij się, że stan przycisków zostanie odświeżony
+            if (_saveCommand is RelayCommand rs) rs.NotifyCanExecuteChanged();
+            ((RelayCommand)_cancelCommand).NotifyCanExecuteChanged();
+
             MessageBox.Show("Przechwytywanie zakończone.", "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
@@ -239,12 +264,13 @@ namespace Hidden_Hills.MVVM.ViewModel
 
         private bool CanSavePcap()
         {
+            Debug.WriteLine($"CanSavePcap called. Count = {_capturedPackets.Count}");
             return _capturedPackets.Count > 0;
         }
 
         private void CancelCapture()
         {
-            _cancellationTokenSource?.Cancel(); // Anulowanie Task.Delay()
+            _cancellationTokenSource?.Cancel();
             StopCapture();
             Progress = 0;
             IsCaptureCompleted = true;
