@@ -50,3 +50,11 @@ cd Hidden-Hills
 ## Podsumowanie
 
 Hidden Hills to kompleksowa aplikacja WPF o charakterze praktycznym i edukacyjnym – łącząca elementy przetwarzania pakietów sieciowych, kryptografii symetrycznej oraz nowoczesnej architektury MVVM w formie aplikacji desktopowej.
+
+
+## Screenshots
+![Menu](Images/Screenshots/hiddenhills1.PNG)
+![Packets](Images/Screenshots/hiddenhills2.PNG)
+![Decrypt](Images/Screenshots/hiddenhills3.PNG)
+![Encrypt](Images/Screenshots/hiddenhills4.PNG)
+
